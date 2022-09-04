@@ -1,0 +1,27 @@
+server:
+  port:80
+
+spring:
+  h2:
+    console:
+    enabled: true
+    path: /h2-console
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    properties:
+      dialect:
+        org.hibernate.dialect.MySQL5InnoDBDialect
+
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=False;
+      username: root
+      password: 9799
+
+handlebars:
+  suffix: .html
+  expose-session-attribute: true
