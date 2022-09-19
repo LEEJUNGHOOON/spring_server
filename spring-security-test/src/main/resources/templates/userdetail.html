@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title>userdetail page</title>
+</head>
+<body>
+<h1>선호도 조사</h1>
+<form th:action="@{/post}" method="POST">
+  좋아하는 음식 : <input type="text" name="favfood"> <br>
+  선호하는 맛 : <input type="text" name="foodtaste"> <br>
+  가구원 수: <input type="text" name="howmany"> <br>
+
+  <button type="submit">완료</button>
+</form> <br>
+
+</body>
+</html>

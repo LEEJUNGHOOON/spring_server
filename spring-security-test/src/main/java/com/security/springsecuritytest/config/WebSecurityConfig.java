@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin() // 로그인에 대한 설정
                         .loginPage("/login") // 로그인 페이지 링크
-                        .defaultSuccessUrl("/") // 로그인 성공시 연결되는 주소
+                        .defaultSuccessUrl("/userdetail") // 로그인 성공시 연결되는 주소
                 .and()
                     .logout() // 로그아웃 관련 설정
                         .logoutSuccessUrl("/login") // 로그아웃 성공시 연결되는 주소

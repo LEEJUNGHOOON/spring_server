@@ -20,7 +20,7 @@ public class UserInfo implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long code; // PK
+    private Long Id; // PK
 
     @Column(unique = true, nullable = false)
     private String email; // id(email)
