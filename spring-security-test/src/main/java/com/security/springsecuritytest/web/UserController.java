@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 
     private final UserService userService;
-    private final UserDetailService userDetailService;
+
 
     @PostMapping("/user") // signup api
     public String signup(UserInfoDto infoDto) {
@@ -29,15 +29,6 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @PostMapping("/post")//user추가정보
-    public String userDetail(UserDetailDto detailDto){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails)principal;
-        UserInfo userInfo = (UserInfo) userDetails;
-        detailDto.setUserinfo(userInfo);
-        userDetailService.save(detailDto);
-        return "/post";
-    }
     @GetMapping("/logout") // logout by GET 요청
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder
