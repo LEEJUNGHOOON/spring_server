@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+        <th>갯수</th>
+        <th>구분</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ingredient : ${recipeIngredient}">
+        <td th:text="${ingredient.RECIPE_ID}"></td>
+        <td th:text="${ingredient.IRDNT_NM}"></td>
+        <td th:text="${ingredient.IRDNT_CPCTY}"></td>
+        <td th:text="${ingredient.IRDNT_TY_NM}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>순서</th>
+    <th>설명</th>
+    <th>꿀팁</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="detail : ${recipeDetail}">
+    <td th:text="${detail.RECIPE_ID}"></td>
+    <td th:text="${detail.COOKING_NO}"></td>
+    <td th:text="${detail.COOKING_DC}"></td>
+    <td th:text="${detail.STEP_TIP}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -27,8 +27,8 @@ public class JsontransferController {
     @Autowired
     private UserDetailRepository userDetailRepository;
 
-    @GetMapping("/sex")
-    @PostMapping("/sex")//user추가정보
+    @GetMapping("/sendJson")
+    @PostMapping("/sendJson")//user추가정보
     public String springtoflask(UserDetailDto detailDto) {
 
         String url = "http://127.0.0.1:5000";
