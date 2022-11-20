@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,15 @@ public class RecipeIngredientController {
     @GetMapping("/ingredient")//레시피들어가는 재료
     public String recipeingre(Model model){
         List<Recipeingredient> riList = (List<Recipeingredient>)recipeIngredientRepo.findAll();
-        model.addAttribute("recipeIngredient",riList);
+        List<Recipeingredient> riList1=  new ArrayList<Recipeingredient>();
+        for(Recipeingredient recipeingredient : riList)
+        {
+            if(recipeingredient.getRECIPE_ID()==0)
+            {
+                riList1.add(recipeingredient);
+            }
+        }
+        model.addAttribute("recipeIngredient",riList1);
         return "/recipeIngredent";
     }
 
