@@ -39,6 +39,5 @@ public class UserDetail {
         this.foodtaste = foodtaste;
         this.howmany = howmany;
         this.userinfo = userinfo;
-
     }
 }
