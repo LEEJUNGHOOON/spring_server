@@ -24,12 +24,10 @@ public class RecipeIngredentService {
 
         for(Recipeingredient ri: ris){
             RecipeIngredientDto recipeIngredientDto = RecipeIngredientDto.builder()
-                    .RECIPE_ID(ri.getRECIPE_ID())
-                    .IRDNT_SN(ri.getIRDNT_SN())
-                    .IRDNT_NM(ri.getIRDNT_NM())
-                    .IRDNT_CPCTY(ri.getIRDNT_CPCTY())
-                    .IRDNT_TY_CODE(ri.getIRDNT_TY_CODE())
-                    .IRDNT_TY_NM(ri.getIRDNT_TY_NM())
+                    .idx_ing(ri.getIdx_ing())
+                    .ingredient_name(ri.getIngredient_name())
+                    .ingredient_Cp(ri.getIngredient_Cp())
+                    .recipeList(ri.getRecipeList())
                     .build();
             riDtoList.add(recipeIngredientDto);
         }

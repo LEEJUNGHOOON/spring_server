@@ -31,7 +31,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/getintent")
-public class JsontransferController {
+public class JsontransferController {//flask로 부터 intent 구분을 불러오는 controller
 
     @Autowired
     private UserDetailRepository userDetailRepository;
@@ -52,7 +52,7 @@ public class JsontransferController {
         BufferedReader reader = null;
         String result = "";
         String line = null;
-        String flask_url = "http://9c42-34-143-143-222.ngrok.io/chat_request";//flask 서버 URL
+        String flask_url = "http://8b5a-34-82-150-197.ngrok.io/chat_request";//flask 서버 URL
 
         URL url = new URL(flask_url);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

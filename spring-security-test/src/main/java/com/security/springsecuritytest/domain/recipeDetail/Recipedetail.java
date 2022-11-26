@@ -1,37 +1,37 @@
 package com.security.springsecuritytest.domain.recipeDetail;
 
+import com.security.springsecuritytest.domain.recipeList.RecipeList;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 불완전한 객체 생성을 막아주는 역할
-@Table(name = "recipedetail")
+@Table(name = "recipeCooking")
 public class Recipedetail {
 
-    @Column
-    private int RECIPE_ID;
     @Id
     @Column
-    private int COOKING_NO;
+    private int idx;
     @Column
-    private String COOKING_DC;
+    private String cooking_order;
     @Column
-    private String STRE_STEP_IMAGE_URL;
-    @Column
-    private String STEP_TIP;
+    private int cooking_order_no;
+    @ManyToOne(targetEntity = RecipeList.class)
+    @JoinColumn(name="total_list_ID")
+    private RecipeList recipeList;
 
     @Builder
-    public Recipedetail(int RECIPE_ID, int COOKING_NO, String COOKING_DC, String STRE_STEP_IMAGE_URL, String STEP_TIP){
-        this.RECIPE_ID = RECIPE_ID;
-        this.COOKING_NO = COOKING_NO;
-        this.COOKING_DC = COOKING_DC;
-        this.STRE_STEP_IMAGE_URL = STRE_STEP_IMAGE_URL;
-        this.STEP_TIP =STEP_TIP;
+    public Recipedetail(int idx, String cooking_order, int cooking_order_no, RecipeList recipeList){
+        this.idx = idx;
+        this.cooking_order = cooking_order;
+        this.cooking_order_no = cooking_order_no;
+        this.recipeList = recipeList;
     }
+//    @Override
+//    public String toString(){
+//        return "{"+"idx="+idx+", cooking_order="
+//    }
 }

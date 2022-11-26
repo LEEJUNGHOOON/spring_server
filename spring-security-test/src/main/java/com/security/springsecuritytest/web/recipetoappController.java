@@ -1,8 +1,13 @@
 package com.security.springsecuritytest.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.security.springsecuritytest.domain.recipeDetail.Recipedetail;
 import com.security.springsecuritytest.domain.recipeDetail.RecipedetailRepo;
+import com.security.springsecuritytest.domain.recipeIngredient.RecipeIngredientRepo;
+import com.security.springsecuritytest.domain.recipeIngredient.Recipeingredient;
+import com.security.springsecuritytest.domain.recipeList.RecipeList;
+import com.security.springsecuritytest.domain.recipeList.RecipeListRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,29 +32,32 @@ import java.util.List;
 public class recipetoappController {
 
     @Autowired
+    private final RecipeListRepo recipeListRepo;
+    private final RecipeIngredientRepo recipeIngredientRepo;
     private final RecipedetailRepo recipedetailRepo;
 
-    @ResponseBody
-    @PostMapping("")
-    public JSONObject androidPage(HttpServletRequest request){
-        System.out.println("서버에서 안드로이드 접속 요청함");
 
+
+    @ResponseBody
+    @PostMapping("/recipeList")//레시피 전체 리스트를 post형식으로 안드로이드에게 보내줌
+    public JSONObject recipeList(HttpServletRequest request){
+        System.out.println("서버에서 안드로이드 접속 요청함(레시피 전체 리스트)");
 
         JSONArray jsonArray = new JSONArray();
         JSONParser jsonParser = new JSONParser();
         JSONObject recipejson= new JSONObject();
 
         try{
-            List<Recipedetail> rdList = (List<Recipedetail>)recipedetailRepo.findAll();
+            List<RecipeList> rdList = (List<RecipeList>)recipeListRepo.findAll();
             String id = request.getParameter("id");
-            String pw = request.getParameter("pw");
             System.out.println("id:"+id);
-            System.out.println("pw:"+pw);
 
-            for (Recipedetail recipedetail1:rdList) {
+            for (RecipeList recipeList:rdList) {
+                System.out.println(recipeList.getClass());
 
                 Gson gson = new Gson();
-                String jsonString = gson.toJson(recipedetail1);
+
+                String jsonString = gson.toJson(recipeList);
 
                 JSONObject json=new JSONObject();
                 json = (JSONObject)jsonParser.parse(jsonString);
@@ -57,7 +65,46 @@ public class recipetoappController {
                 jsonArray.add(json);
             }
             System.out.println();
-            recipejson.put("recipe",jsonArray);
+            recipejson.put("recipelist",jsonArray);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return recipejson;
+    }
+
+    @ResponseBody
+    @PostMapping("/recipeIngredient")//Db에서 레시피 재료들을 post형식으로 안드로이드에게 보내줌
+    public JSONObject recipeIngredient(HttpServletRequest request){
+        System.out.println("서버에서 안드로이드 접속 요청함(레시피 재료)");
+
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+        JSONObject recipejson= new JSONObject();
+
+        try{
+            List<Recipeingredient> rdList = (List<Recipeingredient>)recipeIngredientRepo.findAll();
+            String id = request.getParameter("id");//사용자가 누른 레시피의 id값을 parameter로 가져옴
+            System.out.println("id:"+id);
+
+            for (Recipeingredient recipeingredient:rdList) {
+                System.out.println(recipeingredient.getClass());
+
+                Gson gson = new Gson();
+
+                String jsonString = gson.toJson(recipeingredient);
+
+                JSONObject json=new JSONObject();
+                json = (JSONObject)jsonParser.parse(jsonString);
+//                System.out.println(json instanceof JSONObject);
+                jsonArray.add(json);
+            }
+            System.out.println();
+            recipejson.put("recipeIngredient",jsonArray);
 
 
         }catch (Exception e){
@@ -68,7 +115,46 @@ public class recipetoappController {
         return sortjson(recipejson);
     }
 
-    public JSONObject sortjson(JSONObject json){
+    @ResponseBody
+    @PostMapping("/recipeCooking")//Db에서 레시피 조리 순서를 post형식으로 안드로이드에게 보내줌
+    public JSONObject androidPage(HttpServletRequest request){
+        System.out.println("서버에서 안드로이드 접속 요청함(레시피 순서)");
+
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
+        JSONObject recipejson= new JSONObject();
+
+        try{
+            List<Recipedetail> rdList = (List<Recipedetail>)recipedetailRepo.findAll();
+            String id = request.getParameter("id");//사용자가 누른 레시피의 id값을 parameter로 가져옴
+            System.out.println("id:"+id);
+
+            for (Recipedetail recipedetail1:rdList) {
+                System.out.println(recipedetail1.getClass());
+
+                Gson gson = new Gson();
+
+                String jsonString = gson.toJson(recipedetail1);
+
+                JSONObject json=new JSONObject();
+                json = (JSONObject)jsonParser.parse(jsonString);
+//                System.out.println(json instanceof JSONObject);
+                jsonArray.add(json);
+            }
+            System.out.println();
+            recipejson.put("recipeCooking",jsonArray);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return sortjson(recipejson);
+    }
+
+    public JSONObject sortjson(JSONObject json){//레시피 순서를 id값을 이용하여 sorting해주는 함수
         JSONParser parser = new JSONParser();
 
         JSONObject sortedjson = new JSONObject();
@@ -93,8 +179,8 @@ public class recipetoappController {
                 // String value_B = "";
                 try {
                     // TODO [정수값 value 기준 정렬]
-                    value_A = Integer.parseInt(String.valueOf(a.get("COOKING_NO"))); // [정렬하려는 key 지정]
-                    value_B = Integer.parseInt(String.valueOf(b.get("COOKING_NO"))); // [정렬하려는 key 지정]
+                    value_A = Integer.parseInt(String.valueOf(a.get("cooking_order_no"))); // [정렬하려는 key 지정]
+                    value_B = Integer.parseInt(String.valueOf(b.get("cooking_order_no"))); // [정렬하려는 key 지정]
 
                     // TODO [문자열값 value 기준 정렬]
                     // value_A = (String) a.get(KEY); // [정렬하려는 key 지정]

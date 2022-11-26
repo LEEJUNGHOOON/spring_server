@@ -36,12 +36,12 @@ public class RecipeIngredientController {
 
     @Transactional
     @GetMapping("/ingredient")//레시피들어가는 재료
-    public String recipeingre(Model model){
+    public String recipeingredient(Model model){
         List<Recipeingredient> riList = (List<Recipeingredient>)recipeIngredientRepo.findAll();
         List<Recipeingredient> riList1=  new ArrayList<Recipeingredient>();
         for(Recipeingredient recipeingredient : riList)
         {
-            if(recipeingredient.getRECIPE_ID()==0)
+            if(recipeingredient.getRecipeList().getID()==0)
             {
                 riList1.add(recipeingredient);
             }
