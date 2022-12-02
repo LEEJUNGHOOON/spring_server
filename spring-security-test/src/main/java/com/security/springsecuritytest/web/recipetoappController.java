@@ -1,6 +1,5 @@
 package com.security.springsecuritytest.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.security.springsecuritytest.domain.recipeDetail.Recipedetail;
 import com.security.springsecuritytest.domain.recipeDetail.RecipedetailRepo;
@@ -8,17 +7,16 @@ import com.security.springsecuritytest.domain.recipeIngredient.RecipeIngredientR
 import com.security.springsecuritytest.domain.recipeIngredient.Recipeingredient;
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
 import com.security.springsecuritytest.domain.recipeList.RecipeListRepo;
+import com.security.springsecuritytest.service.RecipeListService;
+import com.security.springsecuritytest.web.dto.RecipeListDto;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -152,6 +150,46 @@ public class recipetoappController {
         }
 
         return sortjson(recipejson);
+    }
+
+    @Autowired
+    private final RecipeListService recipeListService;
+
+    @ResponseBody
+    @PostMapping("/saveRecipe")//레시피를 DB에 저장
+    public String saveRecipe(@RequestBody String jsondata) throws ParseException{
+
+        System.out.println(jsondata);
+        String msg="";
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject json=new JSONObject();
+        json = (JSONObject)jsonParser.parse(jsondata);
+        System.out.println(json);
+
+
+        JSONObject recipe_info = (JSONObject)jsonParser.parse((String)json.get("recipe_info"));
+//        System.out.println(json.get("recipe_ingredient"));
+
+
+        JSONArray recipe_ingredient = (JSONArray)json.get("recipe_ingredient");
+        System.out.println(recipe_ingredient.get(0));
+        System.out.println(recipe_ingredient.get(0).getClass());
+
+        for(Object JsonRecipeIngredient: recipe_ingredient){
+
+            JSONObject recipeIngredient = (JSONObject)jsonParser.parse((String) JsonRecipeIngredient);
+        }
+
+
+        String name = (String)recipe_info.get("Name");
+        String url = (String)recipe_info.get("Url");
+        RecipeListDto recipeListDto = new RecipeListDto(name,url);
+        recipeListService.save(recipeListDto);
+
+//        System.out.println(recipe_ingredient);
+
+        return "lee";
     }
 
     public JSONObject sortjson(JSONObject json){//레시피 순서를 id값을 이용하여 sorting해주는 함수
