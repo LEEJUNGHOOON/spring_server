@@ -7,7 +7,11 @@ import com.security.springsecuritytest.domain.recipeIngredient.RecipeIngredientR
 import com.security.springsecuritytest.domain.recipeIngredient.Recipeingredient;
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
 import com.security.springsecuritytest.domain.recipeList.RecipeListRepo;
+import com.security.springsecuritytest.service.RecipeDetailService;
+import com.security.springsecuritytest.service.RecipeIngredentService;
 import com.security.springsecuritytest.service.RecipeListService;
+import com.security.springsecuritytest.web.dto.RecipeDetailDto;
+import com.security.springsecuritytest.web.dto.RecipeIngredientDto;
 import com.security.springsecuritytest.web.dto.RecipeListDto;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -19,10 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -47,8 +48,8 @@ public class recipetoappController {
 
         try{
             List<RecipeList> rdList = (List<RecipeList>)recipeListRepo.findAll();
-            String id = request.getParameter("id");
-            System.out.println("id:"+id);
+//            String id = request.getParameter("id");
+//            System.out.println("id:"+id);
 
             for (RecipeList recipeList:rdList) {
                 System.out.println(recipeList.getClass());
@@ -85,11 +86,14 @@ public class recipetoappController {
         JSONObject recipejson= new JSONObject();
 
         try{
-            List<Recipeingredient> rdList = (List<Recipeingredient>)recipeIngredientRepo.findAll();
             String id = request.getParameter("id");//사용자가 누른 레시피의 id값을 parameter로 가져옴
             System.out.println("id:"+id);
+            List<Recipeingredient> rilist = recipeIngredientRepo.findByRecipeLList(Integer.parseInt(id));//
+//            System.out.println(rilist.get(1).getIngredient_name());
 
-            for (Recipeingredient recipeingredient:rdList) {
+
+
+            for (Recipeingredient recipeingredient:rilist) {
                 System.out.println(recipeingredient.getClass());
 
                 Gson gson = new Gson();
@@ -124,9 +128,10 @@ public class recipetoappController {
         JSONObject recipejson= new JSONObject();
 
         try{
-            List<Recipedetail> rdList = (List<Recipedetail>)recipedetailRepo.findAll();
+
             String id = request.getParameter("id");//사용자가 누른 레시피의 id값을 parameter로 가져옴
             System.out.println("id:"+id);
+            List<Recipedetail> rdList = recipedetailRepo.findByRecipeLList(Integer.parseInt(id));//해당하는 id의 레시피 조리순서들을 가져옴
 
             for (Recipedetail recipedetail1:rdList) {
                 System.out.println(recipedetail1.getClass());
@@ -154,6 +159,10 @@ public class recipetoappController {
 
     @Autowired
     private final RecipeListService recipeListService;
+    @Autowired
+    private final RecipeIngredentService recipeIngredentService;
+    @Autowired
+    private final RecipeDetailService recipeDetailService;
 
     @ResponseBody
     @PostMapping("/saveRecipe")//레시피를 DB에 저장
@@ -169,27 +178,50 @@ public class recipetoappController {
 
 
         JSONObject recipe_info = (JSONObject)jsonParser.parse((String)json.get("recipe_info"));
-//        System.out.println(json.get("recipe_ingredient"));
 
-
-        JSONArray recipe_ingredient = (JSONArray)json.get("recipe_ingredient");
-        System.out.println(recipe_ingredient.get(0));
-        System.out.println(recipe_ingredient.get(0).getClass());
-
-        for(Object JsonRecipeIngredient: recipe_ingredient){
-
-            JSONObject recipeIngredient = (JSONObject)jsonParser.parse((String) JsonRecipeIngredient);
-        }
-
-
+        int ID = (int)recipeListRepo.count();
         String name = (String)recipe_info.get("Name");
         String url = (String)recipe_info.get("Url");
-        RecipeListDto recipeListDto = new RecipeListDto(name,url);
-        recipeListService.save(recipeListDto);
+        RecipeListDto recipeListDto = new RecipeListDto(ID,name,url);//여기서 post param으로받은 이름,url,자동으로생성되는 id값()
+        int result = recipeListService.save(recipeListDto);//recipe_list(total_list)에 저장
 
-//        System.out.println(recipe_ingredient);
+        JSONArray recipe_ingredient = (JSONArray)json.get("recipe_ingredient");
 
-        return "lee";
+        int ingredient_id_count= Integer.parseInt(String.valueOf(recipeIngredientRepo.count()));
+
+        for(Object JsonRecipeIngredient: recipe_ingredient){
+            JSONObject recipeIngredient = (JSONObject)jsonParser.parse((String)JsonRecipeIngredient);
+            System.out.println(recipeIngredient);
+
+            String ingredient_Name = (String)recipeIngredient.get("ingredient_Name");
+            String getIngredient_Cp = (String)recipeIngredient.get("getIngredient_Cp");
+            Optional<RecipeList> recipeList = recipeListRepo.findById(result);
+            RecipeIngredientDto recipeIngredientDto = new RecipeIngredientDto(ingredient_id_count,ingredient_Name,getIngredient_Cp,recipeList.get());
+
+            recipeIngredentService.save(recipeIngredientDto);//여기에 로직추가
+            ingredient_id_count++;
+        }
+
+        JSONArray recipe_cooking = (JSONArray)json.get("recipe_cooking");
+
+        int cooking_id_count= Integer.parseInt(String.valueOf(recipedetailRepo.count()));
+        System.out.println("recipe detail count: "+ cooking_id_count);
+
+
+        for(Object JsonRecipeCooking: recipe_cooking){
+            JSONObject recipeCooking = (JSONObject)jsonParser.parse((String)JsonRecipeCooking);
+            System.out.println(recipeCooking);
+
+            String cooking_order = (String)recipeCooking.get("cooking_order");
+            int cooking_order_no = Integer.parseInt(String.valueOf(recipeCooking.get("cooking_order_no")));
+            Optional<RecipeList> recipeList = recipeListRepo.findById(result);
+            RecipeDetailDto recipeDetailDto = new RecipeDetailDto(cooking_id_count,cooking_order,cooking_order_no,recipeList.get());
+
+            recipeDetailService.save(recipeDetailDto);//여기에 로직추가
+            cooking_id_count++;
+        }
+
+        return "1";//잘 저장되어있을경우
     }
 
     public JSONObject sortjson(JSONObject json){//레시피 순서를 id값을 이용하여 sorting해주는 함수

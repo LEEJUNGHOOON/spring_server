@@ -8,10 +8,12 @@ import lombok.Setter;
 @Setter
 public class RecipeListDto {
 
+    private int ID;
     private String Name;
     private String imgsrc;
     @Builder
-    public RecipeListDto(String Name, String imgsrc){
+    public RecipeListDto(int ID,String Name, String imgsrc){
+        this.ID = ID;
         this.Name = Name;
         this.imgsrc = imgsrc;
     }

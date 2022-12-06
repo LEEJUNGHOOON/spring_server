@@ -13,7 +13,6 @@ public class RecipeList {
 
     @Id
     @Column
-    @GeneratedValue
     private int ID;
     @Column
     private String Name;
