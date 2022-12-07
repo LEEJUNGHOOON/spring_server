@@ -2,7 +2,10 @@ package com.security.springsecuritytest.domain.recipeList;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -18,17 +21,14 @@ public class RecipeList {
     private String Name;
     @Column
     private String imgsrc;
+    @Column
+    private String recipe_tag;
 
     @Builder
-    public RecipeList(int ID, String Name, String imgsrc){
+    public RecipeList(int ID, String Name, String imgsrc, String recipe_tag){
         this.ID = ID;
         this.Name = Name;
         this.imgsrc = imgsrc;
-    }
-
-    @Builder
-    public RecipeList(String Name, String imgsrc){
-        this.Name = Name;
-        this.imgsrc = imgsrc;
+        this.recipe_tag = recipe_tag;
     }
 }
