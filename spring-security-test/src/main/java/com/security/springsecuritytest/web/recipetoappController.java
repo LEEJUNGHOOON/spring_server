@@ -8,17 +8,21 @@ import com.security.springsecuritytest.domain.recipeIngredient.RecipeIngredientR
 import com.security.springsecuritytest.domain.recipeIngredient.Recipeingredient;
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
 import com.security.springsecuritytest.domain.recipeList.RecipeListRepo;
+import com.security.springsecuritytest.service.RecipeDetailService;
+import com.security.springsecuritytest.service.RecipeIngredentService;
+import com.security.springsecuritytest.service.RecipeListService;
+import com.security.springsecuritytest.web.dto.RecipeDetailDto;
+import com.security.springsecuritytest.web.dto.RecipeIngredientDto;
+import com.security.springsecuritytest.web.dto.RecipeListDto;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,10 +31,7 @@ import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -270,6 +271,73 @@ public class recipetoappController {
         }
 
         return sortjson(recipejson);
+    }
+
+    @Autowired
+    private final RecipeListService recipeListService;
+    @Autowired
+    private final RecipeIngredentService recipeIngredentService;
+    @Autowired
+    private final RecipeDetailService recipeDetailService;
+
+    @ResponseBody
+    @PostMapping("/saveRecipe")//레시피를 DB에 저장
+    public String saveRecipe(@RequestBody String jsondata) throws ParseException{
+
+        System.out.println(jsondata);
+        String msg="";
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject json=new JSONObject();
+        json = (JSONObject)jsonParser.parse(jsondata);
+        System.out.println(json);
+
+
+        JSONObject recipe_info = (JSONObject)json.get("recipe_info");
+
+        int ID = (int)recipeListRepo.count()+1;
+        String name = (String)recipe_info.get("Name");
+        String url = (String)recipe_info.get("Url");
+        String Tag = (String)recipe_info.get("Tag");
+        RecipeListDto recipeListDto = new RecipeListDto(ID,name,url,Tag);//여기서 post param으로받은 이름,url,자동으로생성되는 id값()
+        int result = recipeListService.save(recipeListDto);//recipe_list(total_list)에 저장
+
+        JSONArray recipe_ingredient = (JSONArray)json.get("recipe_ingredient");
+
+        int ingredient_id_count= Integer.parseInt(String.valueOf(recipeIngredientRepo.count()))+1;
+
+        for(Object JsonRecipeIngredient: recipe_ingredient){
+            JSONObject recipeIngredient = (JSONObject)JsonRecipeIngredient;
+            System.out.println(recipeIngredient);
+
+            String ingredient_Name = (String)recipeIngredient.get("ingredient_Name");
+            Optional<RecipeList> recipeList = recipeListRepo.findById(result);
+            RecipeIngredientDto recipeIngredientDto = new RecipeIngredientDto(ingredient_id_count,ingredient_Name,recipeList.get());
+
+            recipeIngredentService.save(recipeIngredientDto);//여기에 로직추가
+            ingredient_id_count++;
+        }
+
+        JSONArray recipe_cooking = (JSONArray)json.get("recipe_cooking");
+
+        int cooking_id_count= Integer.parseInt(String.valueOf(recipedetailRepo.count()))+1;
+        System.out.println("recipe detail count: "+ cooking_id_count);
+
+
+        for(Object JsonRecipeCooking: recipe_cooking){
+            JSONObject recipeCooking = (JSONObject)JsonRecipeCooking;
+            System.out.println(recipeCooking);
+
+            String cooking_order = (String)recipeCooking.get("cooking_order");
+            int cooking_order_no = Integer.parseInt(String.valueOf(recipeCooking.get("cooking_order_no")));
+            Optional<RecipeList> recipeList = recipeListRepo.findById(result);
+            RecipeDetailDto recipeDetailDto = new RecipeDetailDto(cooking_id_count,cooking_order,cooking_order_no,recipeList.get());
+
+            recipeDetailService.save(recipeDetailDto);//여기에 로직추가
+            cooking_id_count++;
+        }
+
+        return "1";//잘 저장되어있을경우
     }
 
     public JSONObject sortjson(JSONObject json){//레시피 순서를 id값을 이용하여 sorting해주는 함수

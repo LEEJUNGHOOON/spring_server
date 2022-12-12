@@ -20,7 +20,8 @@ public class RecipeListService {
         RecipeList recipeList = RecipeList.builder()
                 .ID(recipeListDto.getID())
                 .Name(recipeListDto.getName())
-                .imgsrc(recipeListDto.getImgsrc()).build();
+                .imgsrc(recipeListDto.getImgsrc())
+                .recipe_tag(recipeListDto.getRecipe_tag()).build();
         return recipeListRepo.save(recipeList).getID();
     }
 }

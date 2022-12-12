@@ -17,6 +17,14 @@ public class RecipeIngredentService {
 
     private final RecipeIngredientRepo recipeIngredientRepo;
 
+    public int save(RecipeIngredientDto recipeIngredientDto){
+        Recipeingredient recipeingredient = Recipeingredient.builder()
+                .idx_ing(recipeIngredientDto.getIdx_ing())
+                .ingredient_name(recipeIngredientDto.getIngredient_name())
+                .recipeList(recipeIngredientDto.getRecipeList()).build();
+
+        return recipeIngredientRepo.save(recipeingredient).getIdx_ing();
+    }
 
     public List<RecipeIngredientDto> getRecipeList(){
         List<Recipeingredient> ris = recipeIngredientRepo.findAll();
