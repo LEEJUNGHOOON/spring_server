@@ -49,9 +49,9 @@ public class UserController {
         Optional<UserInfo> userInfo = Optional.ofNullable(userService.loadUserByUsername(email1));
 
         if(userInfo.isPresent())
-            msg = "0";//동일한 아이디가 있을경우
+            msg = "0";
         else
-            msg = "1";//동일한 아이디가 없어 사용이 가능 할 경우
+            msg = "1";
 
         return msg;
     }

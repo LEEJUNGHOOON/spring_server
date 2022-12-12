@@ -34,7 +34,6 @@ public class RecipeIngredientController {
     @Autowired
     private final RecipedetailRepo recipedetailRepo;
 
-
     @Transactional
     @GetMapping("/ingredient")//레시피들어가는 재료
     public String recipeingredient(Model model){

@@ -19,7 +19,7 @@ public class Recipedetail {
     private String cooking_order;
     @Column
     private int cooking_order_no;
-    @ManyToOne(targetEntity = RecipeList.class,fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = RecipeList.class)
     @JoinColumn(name="total_list_ID")
     private RecipeList recipeList;
 
@@ -30,5 +30,8 @@ public class Recipedetail {
         this.cooking_order_no = cooking_order_no;
         this.recipeList = recipeList;
     }
-
+//    @Override
+//    public String toString(){
+//        return "{"+"idx="+idx+", cooking_order="
+//    }
 }
