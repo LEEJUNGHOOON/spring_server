@@ -17,14 +17,17 @@ public class Recipeingredient {
     private int idx_ing;
     @Column
     private String ingredient_name;
+    @Column
+    private String ingredient_Cp;
     @ManyToOne(targetEntity = RecipeList.class)
     @JoinColumn(name="total_list_ID")
     private RecipeList recipeList;
 
     @Builder
-    public Recipeingredient(int idx_ing,String ingredient_name,RecipeList recipeList){
+    public Recipeingredient(int idx_ing,String ingredient_name,String ingredient_Cp,RecipeList recipeList){
         this.idx_ing = idx_ing;
         this.ingredient_name = ingredient_name;
+        this.ingredient_Cp = ingredient_Cp;
         this.recipeList = recipeList;
     }
 }
