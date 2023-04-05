@@ -113,10 +113,11 @@ id값,해당조리단계에대한 설명,조리 단계 순서, 선택한 레시�
 
 ```json
 {
-	"recipe_list":[
-								{"ID": "0", "Name":"라면","imgsrc":"img1"},
-								{"ID": "1", "Name":"짬뽕","imgsrc":"img2"}
-								]
+	"recipe_list":
+	[
+		{"ID": "0", "Name":"라면","imgsrc":"img1"},
+		{"ID": "1", "Name":"짬뽕","imgsrc":"img2"}
+	]
 }
 ```
 
@@ -182,4 +183,48 @@ api서버로 넘겨져온 recipe정보들은 jpa인터페이스를 이용하여 
 
 ### `JsontransferController` 에서
 
-1)Access point를 [http://localhost:8080](http://localhost:8080/)/getIntent 로 설정하고 app에서
+1)Access point를 [http://localhost:8080](http://localhost:8080/)/getIntent 로 설정하고 app에서 음성을 입력한다
+
+2)response body에 사용자가 말한 음성 string이 담겨져오고
+
+```java
+@ResponseBody
+@PostMapping("")
+public String flaskspring(@RequestBody String jsonString, 
+HttpServletResponse response) throws ParseException, IOException
+```
+
+3)flask서버에 intent 구분 요청을 post방식으로 보낸다
+
+```java
+String flask_url = "flask 챗봇 서버 주소";//flask 서버 URL
+URL url = new URL(flask_url);
+HttpURLConnection con = (HttpURLConnection) url.openConnection();
+```
+
+```java
+try(OutputStream os = con.getOutputStream()) {
+    byte[] input = jsonString.getBytes("utf-8");    
+		os.write(input, 0, input.length);
+}
+```
+
+4)flask 챗봇 서버로 부터 구분된 intent를 받아오고 app에 return 해준다
+
+```java
+int responseCode = con.getResponseCode();
+System.out.println("http"+"response_code : "+responseCode);
+System.out.println("http"+"response : "+con.getResponseMessage());
+```
+
+```java
+reader = new BufferedReader(new InputStreamReader(in));
+while((line = reader.readLine())!=null){    
+	result += line;
+}
+reader.close();
+if(con !=null){
+    con.disconnect();
+}
+return result;
+```
