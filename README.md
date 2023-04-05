@@ -22,6 +22,8 @@
 - 메인 서버: 아직은 Local
 - 
     - 서버 배포예정
+- 자바 Version:JDK 17
+- gradle Version : gradle-6.9
 - DataBase:
     - version: MySQL 8.0.28
 - 프레임워크: SpringBoot
