@@ -8,13 +8,18 @@ spring:
     path: /h2-console
 
   jpa:
+    database: mysql   # 추가 해준 부분
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # 추가 해준 부분
     show-sql: true
+
     hibernate:
       ddl-auto: update
     generate-ddl: true
     properties:
       dialect:
         org.hibernate.dialect.MySQL5InnoDBDialect
+      hibernate:
+        format_sql: true
 
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver

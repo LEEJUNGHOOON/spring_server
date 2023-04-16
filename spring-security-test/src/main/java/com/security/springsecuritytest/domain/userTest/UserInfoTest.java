@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 불완전한 객체 생성을 막아주는 역할
 @Entity
 @Getter
-public class UserInfoTest implements UserDetails {
+public class UserInfoTest implements UserDetails {//테스트용 entity
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -30,14 +30,15 @@ import java.util.Optional;
 public class RecipeIngredientController {
 
     @Autowired
-    private final RecipeIngredientRepo recipeIngredientRepo;
+    private final RecipeIngredientRepo recipeIngredientRepo;//레시피에 들어가는 재료
     @Autowired
-    private final RecipedetailRepo recipedetailRepo;
+    private final RecipedetailRepo recipedetailRepo;//레시피순서
 
     @Transactional
     @GetMapping("/ingredient")//레시피들어가는 재료
     public String recipeingredient(Model model){
-        List<Recipeingredient> riList = (List<Recipeingredient>)recipeIngredientRepo.findAll();
+        List<Recipeingredient> riList = (List<Recipeingredient>)recipeIngredientRepo.findAll();//모든레시피를 db에서 가지고옴
+        System.out.println(riList);
         List<Recipeingredient> riList1=  new ArrayList<Recipeingredient>();
         for(Recipeingredient recipeingredient : riList)
         {
