@@ -9,23 +9,24 @@ spring:
 
   jpa:
     database: mysql   # 추가 해준 부분
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # 추가 해준 부분
+    #database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # 추가 해준 부분
     show-sql: true
 
     hibernate:
       ddl-auto: update
     generate-ddl: true
+
     properties:
       dialect:
-        org.hibernate.dialect.MySQL5InnoDBDialect
+        #org.hibernate.dialect.MySQL5InnoDBDialect
       hibernate:
         format_sql: true
-
-    datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/testdb1?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=False;
-      username: root
-      password: 9799
+        
+  datasource:
+    url: jdbc:mysql://database-1.c78kyz1h0q9p.us-east-2.rds.amazonaws.com:3306/testDB?createDatabaseIfNotExist=true
+    username: waganawa
+    password: youareadie2!A
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 handlebars:
   suffix: .html

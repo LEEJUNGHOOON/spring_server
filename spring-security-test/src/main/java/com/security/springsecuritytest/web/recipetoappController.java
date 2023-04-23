@@ -8,12 +8,20 @@ import com.security.springsecuritytest.domain.recipeIngredient.RecipeIngredientR
 import com.security.springsecuritytest.domain.recipeIngredient.Recipeingredient;
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
 import com.security.springsecuritytest.domain.recipeList.RecipeListRepo;
+import com.security.springsecuritytest.domain.user.FireBaseUser;
+import com.security.springsecuritytest.domain.userInfoDetail.FireBaseUserDetail;
+import com.security.springsecuritytest.domain.userInfoDetail.FireBaseUserDetailRepository;
+import com.security.springsecuritytest.service.FireBaseUserService;
 import com.security.springsecuritytest.service.RecipeDetailService;
 import com.security.springsecuritytest.service.RecipeIngredentService;
 import com.security.springsecuritytest.service.RecipeListService;
+import com.security.springsecuritytest.web.dto.FireBaseUserDetailDto;
+import com.security.springsecuritytest.web.dto.FireBaseUserDto;
 import com.security.springsecuritytest.web.dto.RecipeDetailDto;
 import com.security.springsecuritytest.web.dto.RecipeIngredientDto;
 import com.security.springsecuritytest.web.dto.RecipeListDto;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,8 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 import java.io.BufferedReader;
 import java.io.IOError;
@@ -380,5 +386,135 @@ public class recipetoappController {
 
         System.out.println(sortedjson);
         return sortedjson;
+    }
+
+    @Autowired
+    private final FireBaseUserService fireBaseUserService;
+
+    @ResponseBody
+    @PostMapping("/saveNewUser")
+    public String saveNewUser(@RequestBody String jsondata) throws ParseException{
+        System.out.println(jsondata);
+        String msg="";
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject json=new JSONObject();
+        json = (JSONObject)jsonParser.parse(jsondata);
+        System.out.println(json);
+
+        JSONObject user_info = (JSONObject)json.get("user_info");
+
+        String UID = (String)user_info.get("UID");
+        String email = (String)user_info.get("email");
+        String password = (String)user_info.get("password");
+        String auth = (String)user_info.get("auth");
+
+        FireBaseUserDto userDto = FireBaseUserDto.builder()
+                .UID(UID)
+                .auth(auth)
+                .email(email)
+                .password(password).build();
+        
+        FireBaseUser user = fireBaseUserService.saveNewFireBaseUser(userDto);
+
+        if(user == null){
+            return "-1";
+        }
+
+        ArrayList newUserRecipeList = new ArrayList<Integer>();
+
+        FireBaseUserDetailDto userDetailDto = FireBaseUserDetailDto.builder()
+                .UID(user.getUID())
+                .lastfood(-1)
+                .foodtaste(null)
+                .userRecipeList(newUserRecipeList)
+                .userinfo(user).build();
+
+        FireBaseUserDetail userDetail = fireBaseUserService.saveNewFireBaseUser(userDetailDto);
+
+        if(userDetail == null){
+            return "-1";
+        }
+
+        return "1";
+
+    }
+
+    @ResponseBody
+    @PostMapping("/updateUser")
+    public String updateUser(@RequestBody String jsondata) throws ParseException{
+        System.out.println(jsondata);
+        String msg="";
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject json=new JSONObject();
+        json = (JSONObject)jsonParser.parse(jsondata);
+        System.out.println(json);
+
+        JSONObject user_info = (JSONObject)json.get("user_info");
+
+        String UID = (String)user_info.get("UID");
+        String email = (String)user_info.get("email");
+        String password = (String)user_info.get("password");
+        String auth = (String)user_info.get("auth");
+
+        FireBaseUserDto userDto = FireBaseUserDto.builder()
+                .UID(UID)
+                .auth(auth)
+                .email(email)
+                .password(password).build();
+        
+        String result = fireBaseUserService.updateFireBaseUser(userDto);
+
+        if(result == null){
+            return "-1";
+        }
+
+        return "1";
+
+    }
+    
+    @ResponseBody
+    @PostMapping("/updateUserDetail")
+    public String updateUserDetail(@RequestBody String jsondata) throws ParseException{
+        System.out.println(jsondata);
+        String msg="";
+        JSONParser jsonParser = new JSONParser();
+
+        JSONObject json=new JSONObject();
+        json = (JSONObject)jsonParser.parse(jsondata);
+        System.out.println(json);
+
+        JSONObject user_info = (JSONObject)json.get("user_detail");
+
+        String UID = (String)user_info.get("UID");
+        int lastfood = (int)((long)user_info.get("lastfood"));
+        String foodtaste = (String)user_info.get("foodtaste");
+        
+        JSONArray listobject = (JSONArray)user_info.get("userRecipeList");
+        ArrayList<Integer> userRecipeList = new ArrayList<Integer>();
+
+        for(Object temp : listobject){
+            JSONObject obj = (JSONObject) temp;
+
+            int tmp_ID = (int)((long)obj.get("ID"));
+
+            userRecipeList.add(tmp_ID);
+        }
+
+        FireBaseUserDetailDto userDetailDto = FireBaseUserDetailDto.builder()
+                .UID(UID)
+                .lastfood(lastfood)
+                .foodtaste(foodtaste)
+                .userRecipeList(userRecipeList).build();
+        
+        String result = fireBaseUserService.updateFireBaseUserDetail(userDetailDto);
+
+        if(result == null){
+            return "-1";
+        }
+
+        return "1";
+
     }
 }

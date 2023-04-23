@@ -1,9 +1,9 @@
 package com.security.springsecuritytest.domain.recipeIngredient;
 
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
-import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter

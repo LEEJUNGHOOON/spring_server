@@ -1,5 +1,4 @@
 package com.security.springsecuritytest.domain.user;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,11 +16,12 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 불완전한 객체 생성을 막아주는 역할
 @Entity
 @Getter
-public class UserInfo implements UserDetails {
+@Table(name="firebaseuser")
+public class FireBaseUser implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // PK
+    @Column
+    private String UID; // PK(from firebase)
 
     @Column(unique = true, nullable = false)
     private String email; // id(email)
@@ -33,7 +33,8 @@ public class UserInfo implements UserDetails {
     private String auth; // role , 형태로 저장
 
     @Builder
-    public UserInfo(String email, String password, String auth) {
+    public FireBaseUser(String UID,String email, String password, String auth) {
+        this.UID = UID;
         this.email = email;
         this.password = password;
         this.auth = auth;

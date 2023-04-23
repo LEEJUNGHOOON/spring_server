@@ -9,6 +9,9 @@ import com.security.springsecuritytest.service.UserService;
 import com.security.springsecuritytest.web.dto.UserDetailDto;
 import com.security.springsecuritytest.web.dto.UserInfoDto;
 import com.security.springsecuritytest.web.dto.UserInfoTestDto;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,8 +22,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RequiredArgsConstructor
