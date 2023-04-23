@@ -12,9 +12,9 @@ public class DataBaseConfig {
     public DataSource dataSource(){
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.username("root");
-        dataSourceBuilder.password("9799");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/testdb1?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=False");
+        dataSourceBuilder.username("waganawa");
+        dataSourceBuilder.password("gachonackr3");
+        dataSourceBuilder.url("jdbc:mysql://database-1.c78kyz1h0q9p.us-east-2.rds.amazonaws.com:3306/testDB_new_test1?createDatabaseIfNotExist=true&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=False");
         return dataSourceBuilder.build();
     }
 }
