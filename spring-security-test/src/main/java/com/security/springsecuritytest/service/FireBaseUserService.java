@@ -1,5 +1,6 @@
 package com.security.springsecuritytest.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -87,11 +88,16 @@ public class FireBaseUserService {
         Optional<FireBaseUserDetail> currentUserDetail = fireBaseUserDetailRepository.findById(userDetail.getUID());
 
         if(currentUserDetail.isPresent()){
+
+            ArrayList<Integer> ptrRecipeList = currentUserDetail.get().getUserRecipeList();
+
+            ptrRecipeList.addAll(userDetail.getUserRecipeList());
+
             FireBaseUserDetail _user = FireBaseUserDetail.builder()
                     .UID(userDetail.getUID())
                     .lastfood(userDetail.getLastfood())
                     .foodtaste(userDetail.getFoodtaste())
-                    .userRecipeList(userDetail.getUserRecipeList())
+                    .userRecipeList(ptrRecipeList)
                     .userinfo(currentUserDetail.get().getUserinfo()).build();
 
             return fireBaseUserDetailRepository.save(_user).getUID() + " Detail update clear ";
