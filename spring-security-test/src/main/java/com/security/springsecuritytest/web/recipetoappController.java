@@ -50,8 +50,8 @@ public class recipetoappController {
     private final RecipedetailRepo recipedetailRepo;//해당레시피의 조리순서
 
     @ResponseBody
-    @PostMapping("/recipeFind/{idx}")//레시피 전체 리스트를 post형식으로 안드로이드에게 보내줌
-    public JSONObject recipeListFind(@PathVariable("idx") int id ){
+    @PostMapping("/recipeFind")//레시피 전체 리스트를 post형식으로 안드로이드에게 보내줌
+    public JSONObject recipeListFind(@RequestParam("id") int id ){
         System.out.println("서버에서 안드로이드 접속 요청함(특정 레시피 리스트)");
 
         JSONObject recipejson= new JSONObject();
