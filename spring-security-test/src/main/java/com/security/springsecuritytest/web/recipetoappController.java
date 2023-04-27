@@ -329,7 +329,7 @@ public class recipetoappController {
             cooking_id_count++;
         }
 
-        return "1";//잘 저장되어있을경우
+        return Integer.toString(ID);//잘 저장되어있을경우
     }
 
     public JSONObject sortjson(JSONObject json){//레시피 순서를 id값을 이용하여 sorting해주는 함수
@@ -517,4 +517,5 @@ public class recipetoappController {
         return "1";
 
     }
+
 }
