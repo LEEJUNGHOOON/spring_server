@@ -441,6 +441,26 @@ public class recipetoappController {
     }
 
     @ResponseBody
+    @GetMapping("/getUserDetail")
+    public String getUser(@RequestParam("UID") String UID) throws ParseException{
+        
+        FireBaseUserDetail result = fireBaseUserService.getFireBaseUserDetail(UID);
+
+        if(result == null){
+            return null;
+        }else {
+            JSONObject user = new JSONObject();
+
+            user.put("UID",result.getUID());
+            user.put("lastfood",result.getLastfood());
+            user.put("foodtaste",result.getFoodtaste());
+
+            return user.toJSONString();
+        }
+
+    }
+
+    @ResponseBody
     @PostMapping("/updateUser")
     public String updateUser(@RequestBody String jsondata) throws ParseException{
         System.out.println(jsondata);
