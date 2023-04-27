@@ -50,35 +50,107 @@ public class recipetoappController {
     private final RecipedetailRepo recipedetailRepo;//해당레시피의 조리순서
 
     @ResponseBody
-    @PostMapping("/recipeFind")//레시피 전체 리스트를 post형식으로 안드로이드에게 보내줌
-    public JSONObject recipeListFind(@RequestParam("id") int id ){
-        System.out.println("서버에서 안드로이드 접속 요청함(특정 레시피 리스트)");
+    @PostMapping("/recipeListFind")//레시피 전체 리스트를 post형식으로 안드로이드에게 보내줌
+    public JSONObject recipeListFind(HttpServletRequest request){
+        System.out.println("서버에서 안드로이드 접속 요청함(레시피 전체 리스트)");
 
+        String body = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
+
+        try{
+            InputStream inputStream = request.getInputStream();
+            if(inputStream != null){
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                char[] charBuffer = new char[128];
+                int bytesRead = -1;
+                while((bytesRead = bufferedReader.read(charBuffer))>0){
+                    stringBuilder.append(charBuffer,0,bytesRead);
+                }
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        body = stringBuilder.toString();
+
+        JSONObject requestBody = null;
+
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
         JSONObject recipejson= new JSONObject();
 
         try{
 
-            Optional<RecipeList> rdList = recipeListRepo.findById(id);//db에서 모든레시피들을 가져옴
+            requestBody = (JSONObject)jsonParser.parse(body);
 
-            if(rdList.isPresent()){
+            List<RecipeList> rdList = (List<RecipeList>)recipeListRepo.findAll();//db에서 모든레시피들을 가져옴
 
-                RecipeList tmp = rdList.get();
-                recipejson.put("ID", tmp.getID());
-                recipejson.put("Name",tmp.getName());
-                recipejson.put("imgsrc", tmp.getImgsrc());
-                recipejson.put("recipe_tag",tmp.getRecipe_tag());
+            JSONArray find_list = (JSONArray)requestBody.get("find");
 
-                return recipejson;
+            System.out.println(find_list);
 
-            }else{
+            ArrayList<Integer> ID_list = new ArrayList<>();
 
-                return null;
+            for(int i=0;i<find_list.size();i++){
+                JSONObject tmp = (JSONObject)find_list.get(i);
+
+                System.out.println(tmp);
+                int ptr = Integer.parseInt(tmp.get("ID").toString());
+                System.out.println(ptr);
+
+                ID_list.add(ptr);
             }
+
+            for (RecipeList recipeList:rdList) {
+
+                System.out.println(recipeList.getClass());
+                int recipe_id = recipeList.getID();
+
+                Gson gson = new Gson();
+
+                if(ID_list.contains(recipe_id)){
+                    String jsonString = gson.toJson(recipeList);
+
+                    JSONObject json=new JSONObject();
+                    json = (JSONObject)jsonParser.parse(jsonString);
+                    //System.out.println(json instanceof JSONObject);
+                    jsonArray.add(json);
+                }
+
+            }
+
+            System.out.println();
+            recipejson.put("recipelist",jsonArray);
 
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
+
+        return recipejson;
+        //{
+        //    "recipelist": [
+        //        {
+        //            "ID": 0,
+        //            "imgsrc": "img1",
+        //            "Name": "라면"
+        //        },
+        //        {
+        //            "ID": 1,
+        //            "imgsrc": "img2",
+        //            "Name": "김치찌개"
+        //        }
+        //    ]
+        //}이렇게 리턴해줌
     }
 
     @ResponseBody
