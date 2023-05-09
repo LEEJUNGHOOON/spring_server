@@ -1,7 +1,9 @@
 package com.security.springsecuritytest.domain.recipeList;
 
+
 import jakarta.persistence.*;
 import lombok.*;
+
 
 @Entity
 @Getter
@@ -12,13 +14,13 @@ public class RecipeList {
 
     @Id
     @Column
-    private int ID;
+    private int ID;//레시피 id값
     @Column
-    private String Name;
+    private String Name;//레시피의 이름
     @Column
-    private String imgsrc;
+    private String imgsrc;//이미지 url 주소
     @Column
-    private String recipe_tag;
+    private String recipe_tag;// 태그 Ex)#한식,#양식
 
     @Builder
     public RecipeList(int ID, String Name, String imgsrc, String recipe_tag){

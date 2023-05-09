@@ -2,7 +2,6 @@ package com.security.springsecuritytest.web.dto;
 
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

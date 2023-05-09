@@ -2,7 +2,9 @@ package com.security.springsecuritytest.domain.recipeReview;
 
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
 
+
 import jakarta.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,11 +20,11 @@ public class RecipeReview {
 
     @Id
     @Column
-    private String UID;
+    private String UID;//사용자 uid
 
     @ManyToOne(targetEntity = RecipeList.class)
     @JoinColumn(name="total_list_ID")
-    private RecipeList recipeList;
+    private RecipeList recipeList;//전체 리스트의 레시피 id값을 왜래키로 참조
 
     @Column
     private int reviewPoint;

@@ -1,41 +1,26 @@
-package com.security.springsecuritytest.web;
-
-import com.google.gson.Gson;
-import com.security.springsecuritytest.domain.userInfoDetail.UserDetailRepository;
+package com.security.springsecuritytest.web.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.HttpsURLConnection;
+
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/getintent")
 public class JsontransferController {//flask로 부터 intent 구분을 불러오는 controller
-
-    @Autowired
-    private UserDetailRepository userDetailRepository;
-
     @ResponseBody
     @PostMapping("")
     public String flaskspring(@RequestBody String jsonString, HttpServletResponse response) throws ParseException, IOException {
@@ -43,7 +28,7 @@ public class JsontransferController {//flask로 부터 intent 구분을 불러�
         JSONParser jsonParser = new JSONParser();
 
         JSONObject json=new JSONObject();
-        json = (JSONObject)jsonParser.parse(jsonString);
+        json = (JSONObject)jsonParser.parse(jsonString);//json parser를 이용하여 RequestBody에서 String 으로 넘어온 문자열을 json형태로 바꿔줌
 
         System.out.println("from android:" + json);
         //////flask에 json 보내고 intent받는 과정
@@ -55,7 +40,7 @@ public class JsontransferController {//flask로 부터 intent 구분을 불러�
         String flask_url = "http://8b5a-34-82-150-197.ngrok.io/chat_request";//flask 서버 URL
 
         URL url = new URL(flask_url);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();//연결
 
         con.setDoInput(true);
         con.setUseCaches(false);
@@ -73,15 +58,13 @@ public class JsontransferController {//flask로 부터 intent 구분을 불러�
         con.connect();
 
         int responseCode = con.getResponseCode();
-        System.out.println("http"+"response_code : "+responseCode);
-        System.out.println("http"+"response : "+con.getResponseMessage());
+        System.out.println("http"+"response_code : "+responseCode);//flask 서버에서 받은 응답코드
+        System.out.println("http"+"response : "+con.getResponseMessage());//flask 서버에서 받은 응답메세지
 
         con.setInstanceFollowRedirects(true);
 
         if(responseCode == HttpsURLConnection.HTTP_OK){
-
             in = con.getInputStream();
-
         }else{
             in = con.getErrorStream();
         }
@@ -97,6 +80,6 @@ public class JsontransferController {//flask로 부터 intent 구분을 불러�
             con.disconnect();
         }
 
-        return result;
+        return result;//flask서버로 부터 받은 응답을 안드로이드 어플리케이션으로 리턴
     }
 }

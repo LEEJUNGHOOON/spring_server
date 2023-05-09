@@ -2,8 +2,10 @@ package com.security.springsecuritytest.domain.recipeDetail;
 
 import com.security.springsecuritytest.domain.recipeList.RecipeList;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import jakarta.persistence.*;
+
 
 @Entity
 @Getter
@@ -14,12 +16,12 @@ public class Recipedetail {
 
     @Id
     @Column
-    private int idx;
+    private int idx;//index값
     @Column
-    private String cooking_order;
+    private String cooking_order;//해당레시피를 조리 하는 순서 ex)면을 삶는다
     @Column
-    private int cooking_order_no;
-    @ManyToOne(targetEntity = RecipeList.class)
+    private int cooking_order_no;// 해당 레시피 조리 순서 ex)
+    @ManyToOne(targetEntity = RecipeList.class)//전체 레시피리스트 에서 id값을 왜래키로 참조
     @JoinColumn(name="total_list_ID")
     private RecipeList recipeList;
 
@@ -30,8 +32,5 @@ public class Recipedetail {
         this.cooking_order_no = cooking_order_no;
         this.recipeList = recipeList;
     }
-//    @Override
-//    public String toString(){
-//        return "{"+"idx="+idx+", cooking_order="
-//    }
+
 }

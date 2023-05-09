@@ -1,9 +1,7 @@
 package com.security.springsecuritytest.web.dto;
 
 import com.security.springsecuritytest.domain.user.FireBaseUser;
-import com.security.springsecuritytest.domain.user.UserInfo;
 
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

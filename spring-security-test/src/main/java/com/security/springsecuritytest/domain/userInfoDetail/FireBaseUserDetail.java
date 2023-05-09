@@ -3,6 +3,7 @@ package com.security.springsecuritytest.domain.userInfoDetail;
 import com.security.springsecuritytest.domain.user.FireBaseUser;
 
 import jakarta.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
