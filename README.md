@@ -26,6 +26,7 @@
 - gradle Version : gradle-6.9
 - DataBase:
     - version: MySQL 8.0.28
+    - Amazon RDS
 - 프레임워크: SpringBoot
 - Tool: IntelliJ(코드 작성 IDE), PostMan(API 테스트)
 
@@ -62,9 +63,55 @@ T.B.U(
 - 우선 가장 기본이 되는 회원가입, 로그인 API 부터 작성
 - Postman을 통해 API 작동 확인
 
-## 1.회원가입&로그인
+## 1.회원가입&로그인(Using JPA, Google FireBase Authentication)
+안드로이드 환경에서 가장 사용성이 좋은 구글파이어베이스 authentication 기능을 이용하여 회원가입&로그인 기능을 구현 함
 
-T.B.U
+### 1)Entity
+
+**-FireBaseUser(파이어베이스에 등록된 유저의 정보들)**
+
+<img width="926" alt="스크린샷 2023-05-14 오후 5 10 54" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/cb1e84ef-830d-463e-96ca-35fbec34f8d8">
+
+**-FireBaseUserDetail(등록된 유저의 상세한 정보들(이후 추천시스템에 활용))**
+
+<img width="959" alt="스크린샷 2023-05-14 오후 5 16 50" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/829d1f39-7018-4b1a-a46d-188fb0deaa81">
+
+### 2) 쿼리 작성()
+
+<img width="775" alt="스크린샷 2023-05-14 오후 5 30 09" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/6a1b4ecb-b128-4e82-8ad5-fcc491c59f25">
+
+파이어베이스단 에서 자동으로 생성해 주는 UID 값을 이용하여 해당하는 값을가진 유저,유저의 정보를 가져온다.
+
+### 3) api 구현
+
+-메인화면(로그인 화면으로 구성)
+
+![로그인화면](https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/d12d4ba5-eb48-4a24-9446-ef01b5c36295){: width="100" height="100"}
+
+-회원가입 
+![회원가입](https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/41288754-6a68-49b3-9395-f0709dc95e39){: width="100" height="100"}
+
+1. 회원가입 란에 정보를 입력하고 회원가입을 실시하면
+
+<img width="1063" alt="스크린샷 2023-05-14 오후 5 12 10" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/b22f502b-e53f-450c-a581-c665805d02a6">
+
+2.파이어베이스 Authentication에 등록이 되고
+
+<img width="775" alt="스크린샷 2023-05-14 오후 5 34 47" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/ae8308d9-2786-4a0b-a26d-5ab41f3261fb">
+
+3.안드로이드 app 에서 그 정보들을 JSON 형태로 서버단에 보낸다
+
+<img width="775" alt="스크린샷 2023-05-14 오후 5 34 47" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/ae8308d9-2786-4a0b-a26d-5ab41f3261fb">
+
+4. 서버에서는 그 정보를 받아 DB에 저장
+
+<img width="784" alt="스크린샷 2023-05-14 오후 5 37 13" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/4d9c2f18-1639-40ca-afa7-dde49abfed8e">
+
+5.DB에 저장됨
+
+<img width="734" alt="스크린샷 2023-05-14 오후 5 37 58" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/c5341cec-4903-4814-b07f-6b908b811c41">
+
+
 
 ## 2.식재료 리스트 관리(Using jpa)
 
