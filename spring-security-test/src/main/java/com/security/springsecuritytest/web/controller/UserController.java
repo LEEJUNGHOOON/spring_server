@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -72,6 +73,27 @@ public class UserController {
         }
 
         return "1";
+
+    }
+
+    @ResponseBody
+    @PostMapping("/getUserDetail")
+    public String getUser(@RequestParam("UID") String UID) throws ParseException{
+        System.out.println("getUserDetail On");
+
+        FireBaseUserDetail result = fireBaseUserService.getFireBaseUserDetail(UID);
+
+        if(result == null){
+            return "-1";
+        }else {
+            JSONObject user = new JSONObject();
+
+            user.put("UID",result.getUID());
+            user.put("lastfood",result.getLastfood());
+            user.put("foodtaste",result.getFoodtaste());
+
+            return user.toJSONString();
+        }
 
     }
 
