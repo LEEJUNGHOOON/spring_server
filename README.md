@@ -25,16 +25,17 @@
 
 ## 소프트웨어 구성도
 
-여기에 지난 발표때 사용한 ppt자료 첨부
+<img width="974" alt="238176748-fe53ca2f-b814-4e43-8fd5-3bc4b1f5df6e" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/246d4178-722d-4104-89c5-3c550a1bc7a6">
+
 
 ## ERD 구성도
 
-DB에서 entity들의 관계보여주는 uml이나 시각자료를 첨부 할 예정(회원 DB가 정립되면 update)
+[DB에서 entity들의 관계보여주는 uml이나 시각자료를 첨부 할 예정(회원 DB가 정립되면 update)](https://github.com/Gachon-USER/Project_Main/wiki/DataBase)
 
 ## 구현한 기능 목록
 
 - 회원가입/로그인
-- 회원정보 수정/삭제(탈퇴)(will be updated)
+- 회원정보 수정/삭제(탈퇴)
 - 식재료 리스트 관리(Using jpa)
     - 레시피 불러오기
     - 레시피에 들어가는 재료 불러오기
@@ -46,7 +47,8 @@ DB에서 entity들의 관계보여주는 uml이나 시각자료를 첨부 할 �
 
 ### 구현한 flask 챗봇서버와의 통신
 
-T.B.U(
+<img width="977" alt="238176728-3abf57ba-c311-4fba-b3c8-9d48620f0a26" src="https://github.com/LEEJUNGHOOON/spring_server/assets/97214215/d05bf64a-086c-4345-ad7d-b13977e70a54">
+
 
 ## 기능 구현(API 작성) 예시
 
