@@ -1,8 +1,3 @@
-# java spring api doc
-
-상태: 할 일
-작성일시: 2023년 4월 5일 오후 2:35
-
 # Spring- Server
 
 ### 2022~23 가천대학교 소프트웨어학과 졸업작품
@@ -19,16 +14,14 @@
 
 ## 개발 환경
 
-- 메인 서버: 아직은 Local
-- 
-    - 서버 배포예정
+- 메인 서버: Amazon aws Ec2(http://ec2-43-200-41-187.ap-northeast-2.compute.amazonaws.com:8080/)
 - 자바 Version:JDK 17
 - gradle Version : gradle-6.9
 - DataBase:
     - version: MySQL 8.0.28
     - Amazon RDS
 - 프레임워크: SpringBoot
-- Tool: IntelliJ(코드 작성 IDE), PostMan(API 테스트)
+- Tool: IntelliJ(코드 작성 IDE), PostMan(API 테스트), MySql
 
 ## 소프트웨어 구성도
 
@@ -50,7 +43,6 @@ DB에서 entity들의 관계보여주는 uml이나 시각자료를 첨부 할 �
 - flask 챗봇 서버와의 통신
     - flask서버와 통신을해 intent를 flask서버로 전달
     - flask 서버에서 분류해준 response를 다시 app으로 전달
-    - 여기에 설명을 도울 사진 추가예정
 
 ### 구현한 flask 챗봇서버와의 통신
 
@@ -150,7 +142,7 @@ id값,해당조리단계에대한 설명,조리 단계 순서, 선택한 레시�
 
 ![스크린샷 2023-04-05 오후 3.10.22.png](%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2023-04-05_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.10.22.png)
 
-안드로이드 app 에서 api access point를 [http://localhost:8080/](http://localhost:8080/)android/recipeCooking
+안드로이드 app 에서 api access point를 [http://ec2-43-200-41-187.ap-northeast-2.compute.amazonaws.com:8080/](http://ec2-43-200-41-187.ap-northeast-2.compute.amazonaws.com:8080/)android/recipeCooking
 
 으로 설정하고 parameter을 “id=1(ex) 로 설정하고 request를 보내면
 
@@ -176,7 +168,7 @@ id값,해당조리단계에대한 설명,조리 단계 순서, 선택한 레시�
 
 ![Untitled](Untitled%204.png)
 
-사용자가 위의 화면에서 레시피의 정보들을 입력하면 어플리케이션에서 json으로 변환된 정보들이 parameter로 Access Point [http://localhost:8080/](http://localhost:8080/)android/saveRecipe 로 post요청됨
+사용자가 위의 화면에서 레시피의 정보들을 입력하면 어플리케이션에서 json으로 변환된 정보들이 parameter로 Access Point [http://ec2-43-200-41-187.ap-northeast-2.compute.amazonaws.com:8080/](http://ec2-43-200-41-187.ap-northeast-2.compute.amazonaws.com:8080/)android/saveRecipe 로 post요청됨
 
 ![스크린샷 2023-04-05 오후 9.07.12.png](%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2023-04-05_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_9.07.12.png)
 
@@ -232,7 +224,7 @@ api서버로 넘겨져온 recipe정보들은 jpa인터페이스를 이용하여 
 
 ### `JsontransferController` 에서
 
-1)Access point를 [http://localhost:8080](http://localhost:8080/)/getIntent 로 설정하고 app에서 음성을 입력한다
+1)Access point를 [http://ec2-43-200-41-187.ap-northeast-2.compute.amazonaws.com:8080/](http://ec2-43-200-41-187.ap-northeast-2.compute.amazonaws.com:8080/)/getIntent 로 설정하고 app에서 음성을 입력한다
 
 2)response body에 사용자가 말한 음성 string이 담겨져오고
 
