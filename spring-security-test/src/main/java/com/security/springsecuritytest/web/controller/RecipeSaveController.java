@@ -52,7 +52,7 @@ public class RecipeSaveController {
         json = (JSONObject)jsonParser.parse(jsondata);//안드로이드 app에서 사용자가 입력한 레시피의 정보를 parameter로 받아와 json화
         System.out.println(json);
 
-        JSONObject recipe_info = (JSONObject)jsonParser.parse((String)json.get("recipe_info"));
+        JSONObject recipe_info = (JSONObject)json.get("recipe_info");
         //1.
         int ID = (int)recipeListRepo.count();//현재 전체 레시피의 몇개의 data들이 있는지 파악
         String name = (String)recipe_info.get("Name");//레시피의 이름
@@ -67,7 +67,7 @@ public class RecipeSaveController {
         int ingredient_id_count= Integer.parseInt(String.valueOf(recipeIngredientRepo.count()));//레시피 재료 db에 얼마나 많은 data가 있는지 파악
 
         for(Object JsonRecipeIngredient: recipe_ingredient){
-            JSONObject recipeIngredient = (JSONObject)jsonParser.parse((String)JsonRecipeIngredient);//json 형태로 변형해줌
+            JSONObject recipeIngredient = (JSONObject)JsonRecipeIngredient;//json 형태로 변형해줌
             System.out.println(recipeIngredient);
 
             String ingredient_Name = (String)recipeIngredient.get("ingredient_Name");
@@ -86,7 +86,7 @@ public class RecipeSaveController {
         System.out.println("recipe detail count: "+ cooking_id_count);
 
         for(Object JsonRecipeCooking: recipe_cooking){
-            JSONObject recipeCooking = (JSONObject)jsonParser.parse((String)JsonRecipeCooking);//json 형태로 변형해줌
+            JSONObject recipeCooking = (JSONObject)JsonRecipeCooking;//json 형태로 변형해줌
             System.out.println(recipeCooking);
 
             String cooking_order = (String)recipeCooking.get("cooking_order");
