@@ -228,13 +228,12 @@ public class RecipeToAppController {
 
                 String jsonString = gson.toJson(recipedetail1);
 
-                JSONObject json=new JSONObject();
-                json = (JSONObject)jsonParser.parse(jsonString);
+                Object json=(Object)jsonParser.parse(jsonString);
 //                System.out.println(json instanceof JSONObject);
-                jsonArray.add(json);
+                jsonArray.add((JSONObject)json);
             }
             System.out.println();
-            recipejson.put("recipeCooking",jsonArray);
+            recipejson.put("list",jsonArray);
 
 
         }catch (Exception e){
@@ -271,7 +270,7 @@ public class RecipeToAppController {
                 jsonArray.add(json);
             }
             System.out.println();
-            recipejson.put("recipelist",jsonArray);
+            recipejson.put("list",jsonArray);
             System.out.println(jsonArray);
         }catch (Exception e){
             e.printStackTrace();
@@ -285,7 +284,7 @@ public class RecipeToAppController {
 
         JSONObject sortedjson = new JSONObject();
 
-        JSONArray arr = (JSONArray)json.get("recipe");
+        JSONArray arr = (JSONArray)json.get("list");
         List<JSONObject> copyList = new ArrayList<JSONObject>();
 
         for (int i=0; i<arr.size(); i++){
