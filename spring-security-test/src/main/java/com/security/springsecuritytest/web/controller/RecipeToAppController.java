@@ -161,7 +161,7 @@ public class RecipeToAppController {
                 jsonArray.add(json);
             }
             System.out.println();
-            recipejson.put("haha",jsonArray);
+            recipejson.put("recipe",jsonArray);
 
 
         }catch (Exception e){
