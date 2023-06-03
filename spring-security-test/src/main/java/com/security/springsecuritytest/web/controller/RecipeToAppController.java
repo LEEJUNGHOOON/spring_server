@@ -242,7 +242,7 @@ public class RecipeToAppController {
             return null;
         }
 
-        return recipejson;//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
+        return sortjson(recipejson);//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
     }
 
     @ResponseBody
