@@ -161,7 +161,7 @@ public class RecipeToAppController {
                 jsonArray.add(json);
             }
             System.out.println();
-            recipejson.put("haha",jsonArray);
+            recipejson.put("recipe",jsonArray);
 
 
         }catch (Exception e){
@@ -255,6 +255,8 @@ public class RecipeToAppController {
 
 
         try{
+            tag = "%"+ tag + "%";
+
             System.out.println("Tag:"+ tag);
             List<RecipeList> tagRecipeList = recipeListRepo.findByTag(tag);//jpql을 이용하여 해당하는 id의 레시피 조리순서들을 가져옴
 
