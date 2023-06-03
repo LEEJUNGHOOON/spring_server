@@ -161,7 +161,7 @@ public class RecipeToAppController {
                 jsonArray.add(json);
             }
             System.out.println();
-            recipejson.put("haha",jsonArray);
+            recipejson.put("recipeList",jsonArray);
 
 
         }catch (Exception e){
@@ -242,7 +242,7 @@ public class RecipeToAppController {
             return null;
         }
 
-        return sortjson(recipejson);//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
+        return recipejson;//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
     }
 
     @ResponseBody
