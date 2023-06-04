@@ -28,9 +28,9 @@ spring:
 #    password: youareadie2!A
 #    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: jdbc:mysql://localhost:3306/testdb2?createDatabaseIfNotExist=true&useUnicode=true&charaterEncoding=UTF-8&characterSetResults=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: 9799
+    url: jdbc:mysql://database-1.c78kyz1h0q9p.us-east-2.rds.amazonaws.com:3306/testDB_new_test1?createDatabaseIfNotExist=true
+    username: waganawa
+    password: youareadie2!A
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 handlebars:

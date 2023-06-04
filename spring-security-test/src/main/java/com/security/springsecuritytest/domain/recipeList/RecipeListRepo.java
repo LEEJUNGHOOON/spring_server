@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface RecipeListRepo extends JpaRepository<RecipeList, Integer>{
-    @Query(value = "select recipeList from RecipeList recipeList where recipeList.recipe_tag like ?1")//tag을 가진 data들만 가져옴
+    @Query(value = "select recipeList from RecipeList recipeList where recipeList.recipe_tag like %:tag%")//tag을 가진 data들만 가져옴
     List<RecipeList> findByTag(String tag);
 }

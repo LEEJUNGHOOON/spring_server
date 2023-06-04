@@ -242,7 +242,7 @@ public class RecipeToAppController {
             return null;
         }
 
-        return sortjson(recipejson);//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
+        return recipejson;//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
     }
 
     @ResponseBody
@@ -277,7 +277,7 @@ public class RecipeToAppController {
             e.printStackTrace();
             return null;
         }
-        return sortjson(recipejson);//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
+        return recipejson;//조리 순서대로 정렬된 레시피 조리방법을 리턴해줌
     }
 
     public JSONObject sortjson(JSONObject json){//레시피 순서를 id값을 이용하여 sorting해주는 함수
